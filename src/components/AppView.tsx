@@ -175,7 +175,7 @@ export default function AppView({ onBack }: { onBack: () => void }) {
                   atau <span className="text-indigo-600 font-bold hover:underline decoration-indigo-300 underline-offset-4">Jelajahi File</span> dari komputermu
                 </p>
                 <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white shadow-sm border border-slate-100 text-[0.7rem] font-bold text-slate-500 uppercase tracking-widest">
-                  PDF SAJA <span className="w-1 h-1 bg-slate-300 rounded-full" /> MAKS 5MB
+                  PDF <span className="w-1 h-1 bg-slate-300 rounded-full" /> MAKS 5MB
                 </div>
               </div>
             </div>

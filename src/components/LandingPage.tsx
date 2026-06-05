@@ -138,7 +138,7 @@ export default function LandingPage({ onGoToApp }: { onGoToApp: () => void }) {
         
         <div className="grid md:grid-cols-3 gap-8">
           {[
-            { num: "1", title: "Unggah CV-mu", desc: "Seret & lepas file PDF atau DOCX. Ekstraksi otomatis dan aman." },
+            { num: "1", title: "Unggah CV-mu", desc: "Seret & lepas file PDF. Ekstraksi otomatis dan aman." },
             { num: "2", title: "AI Bekerja", desc: "AI mencocokkan CV-mu dengan standar ATS dan posisi incaranmu." },
             { num: "3", title: "Terima Laporan", desc: "Dapatkan skor, area perbaikan, dan rekomendasi kata kunci." },
           ].map((step) => (
