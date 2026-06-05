@@ -8,8 +8,9 @@ export async function POST(req: NextRequest) {
     const formData = await req.formData();
     const file = formData.get("cv");
 
-    // Menangkap input posisi pekerjaan dari frontend (jika ada)
+    // Menangkap input posisi pekerjaan dan userId dari frontend (jika ada)
     const jobPosition = (formData.get("jobPosition") as string) || "";
+    const userId = (formData.get("userId") as string) || null;
 
     if (!(file instanceof File)) {
       return NextResponse.json(
@@ -80,6 +81,7 @@ ${text.slice(0, 12000)}
     // 5. Simpan ke Database via Prisma menggunakan model Resume yang baru
     const savedResume = await prisma.resume.create({
       data: {
+        userId: userId,
         fileName: file.name,
         content: text, // Menyimpan raw text sesuai requirement schema baru Anda
         jobPosition: jobPosition || null,

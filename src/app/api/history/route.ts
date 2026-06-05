@@ -1,9 +1,19 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
+    const { searchParams } = new URL(req.url);
+    const userId = searchParams.get("userId");
+
+    if (!userId) {
+      return NextResponse.json([]);
+    }
+
     const resumes = await prisma.resume.findMany({
+      where: {
+        userId: userId,
+      },
       orderBy: {
         createdAt: "desc",
       },

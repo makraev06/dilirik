@@ -17,16 +17,26 @@ export default function AppView({ onBack }: { onBack: () => void }) {
   const [result, setResult] = useState<any>(null);
   const [activeTab, setActiveTab] = useState("overview");
   const [history, setHistory] = useState<any[]>([]);
+  const [userId, setUserId] = useState<string>("");
 
-  const fetchHistory = useCallback(async () => {
+  const fetchHistory = useCallback(async (uid: string) => {
+    if (!uid) return;
     try {
-      const res = await fetch("/api/history");
+      const res = await fetch(`/api/history?userId=${uid}`);
       const data = await res.json();
       if (Array.isArray(data)) setHistory(data);
     } catch (e) { console.error(e); }
   }, []);
 
-  useEffect(() => { fetchHistory(); }, [fetchHistory]);
+  useEffect(() => {
+    let storedUserId = localStorage.getItem("dilirik_userId");
+    if (!storedUserId) {
+      storedUserId = "user_" + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+      localStorage.setItem("dilirik_userId", storedUserId);
+    }
+    setUserId(storedUserId);
+    fetchHistory(storedUserId);
+  }, [fetchHistory]);
 
   useEffect(() => {
     if (result) {
@@ -65,6 +75,7 @@ export default function AppView({ onBack }: { onBack: () => void }) {
       const formData = new FormData();
       formData.append("cv", file);
       if (jobPosition.trim()) formData.append("jobPosition", jobPosition.trim());
+      if (userId) formData.append("userId", userId);
       const response = await fetch("/api/analyze", { method: "POST", body: formData });
       const responseText = await response.text();
       if (responseText.startsWith("<!DOCTYPE") || responseText.startsWith("<html")) {
@@ -73,7 +84,7 @@ export default function AppView({ onBack }: { onBack: () => void }) {
       }
       const data = JSON.parse(responseText);
       setResult(data);
-      fetchHistory();
+      fetchHistory(userId);
     } catch (error: any) {
       setErrorMsg(error.message || "Terjadi kesalahan yang tidak terduga.");
     } finally {
