@@ -118,11 +118,17 @@ dilirik/
 *(Tambahkan URL gambar screenshot kamu ke sini setelah diunggah ke Github).*
 
 * **Landing Page:**  
-  `![Landing Page Screenshot](./path-to-your-image.png)`
+  <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/71d20ad8-b763-4172-bc15-ee9736dd4b3f" />
+  <img width="1913" height="1074" alt="image" src="https://github.com/user-attachments/assets/8f41c469-eb2e-4d64-9bdc-d9d5077dc3ff" />
+
 * **Upload Dashboard:**  
-  `![Dashboard Screenshot](./path-to-your-image.png)`
+  <img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/5b3c92e9-0987-4565-bbf9-9683f5197508" />
+
 * **Analisis & Laporan:**  
-  `![Result Screenshot](./path-to-your-image.png)`
+  <img width="1128" height="612" alt="image" src="https://github.com/user-attachments/assets/d56da1c3-87b0-4efe-a379-e40bd60e95bc" />
+  <img width="1125" height="984" alt="image" src="https://github.com/user-attachments/assets/a3838a68-c54f-4fa9-a232-cf7c20cb569c" />
+  <img width="1152" height="985" alt="image" src="https://github.com/user-attachments/assets/4ea304d1-cd1a-4d9f-bddc-1fc50ff48a97" />
+
 
 ## 🤝 Berkontribusi
 Jika kamu menemukan *bug* atau memiliki ide penambahan fitur:
