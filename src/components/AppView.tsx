@@ -55,7 +55,6 @@ export default function AppView({ onBack }: { onBack: () => void }) {
     onDrop,
     accept: {
       "application/pdf": [".pdf"],
-      "application/vnd.openxmlformats-officedocument.wordprocessingml.document": [".docx"],
     },
     multiple: false,
     useFsAccessApi: false,
@@ -171,12 +170,13 @@ export default function AppView({ onBack }: { onBack: () => void }) {
                 {isDragActive ? "Lepaskan file di sini..." : "Seret & lepas dokumen CV-mu ke sini"}
               </h3>
               
-              <p className={`text-sm font-medium text-slate-500 mb-5 transition-opacity duration-300 ${isDragActive ? "opacity-0" : "opacity-100"}`}>
-                atau <span className="text-indigo-600 font-bold hover:underline decoration-indigo-300 underline-offset-4">Jelajahi File</span> dari komputermu
-              </p>
-              
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white shadow-sm border border-slate-100 text-[0.7rem] font-bold text-slate-500 uppercase tracking-widest">
-                PDF / DOCX <span className="w-1 h-1 bg-slate-300 rounded-full" /> MAKS 5MB
+              <div className={`transition-opacity duration-300 ${isDragActive ? "opacity-0" : "opacity-100"}`}>
+                <p className="text-sm font-medium text-slate-500 mb-5">
+                  atau <span className="text-indigo-600 font-bold hover:underline decoration-indigo-300 underline-offset-4">Jelajahi File</span> dari komputermu
+                </p>
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white shadow-sm border border-slate-100 text-[0.7rem] font-bold text-slate-500 uppercase tracking-widest">
+                  PDF SAJA <span className="w-1 h-1 bg-slate-300 rounded-full" /> MAKS 5MB
+                </div>
               </div>
             </div>
 

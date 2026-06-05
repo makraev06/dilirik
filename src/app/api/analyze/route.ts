@@ -43,10 +43,12 @@ export async function POST(req: NextRequest) {
     // 2. Setup Gemini AI dan Prompt
     const model = getGeminiModel();
 
-    // Menyertakan jobPosition ke prompt jika user menentukannya agar analisis relevan
+    // Menyertakan jobPosition dan tanggal saat ini ke prompt jika user menentukannya agar analisis relevan
+    const currentDate = new Date().toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" });
     const prompt = `
-Kamu adalah ATS CV Analyzer.
+Kamu adalah ATS CV Analyzer. Hari ini adalah tanggal ${currentDate}. JANGAN menganggap tahun sebelum atau sama dengan ${new Date().getFullYear()} sebagai tahun di masa depan.
 ${jobPosition ? `Analisis CV ini secara spesifik untuk posisi pekerjaan: "${jobPosition}".` : "Analisis CV ini secara umum."}
+PENTING: Kamu WAJIB mengisi bagian "details" (nama, email, experience, education, skills) dari informasi kandidat di dalam CV, apa pun kondisinya. Jangan biarkan null atau kosong.
 
 Balas HANYA JSON valid dengan format:
 
@@ -68,10 +70,29 @@ CV TEXT:
 ${text.slice(0, 12000)}
 `;
 
-    // 3. Request ke Gemini API
-    const result = await model.generateContent(prompt);
-    const response = await result.response;
-    const content = response.text();
+    // 3. Request ke Gemini API (dengan mekanisme Retry)
+    let content = "";
+    let attempts = 0;
+    const maxAttempts = 3;
+
+    while (attempts < maxAttempts) {
+      try {
+        const result = await model.generateContent(prompt);
+        const response = await result.response;
+        content = response.text();
+        break; // Jika berhasil, keluar dari loop
+      } catch (apiError: any) {
+        attempts++;
+        console.warn(`Gemini API Error (Percobaan ${attempts}):`, apiError.message);
+        
+        if (attempts >= maxAttempts) {
+          throw apiError; // Lemparkan error jika sudah maksimal percobaan
+        }
+        
+        // Tunggu 2 detik sebelum mencoba lagi jika gagal (misal karena 503/high demand)
+        await new Promise((res) => setTimeout(res, 2000));
+      }
+    }
 
     console.log("GEMINI RESPONSE SUKSES");
 
