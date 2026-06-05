@@ -83,6 +83,11 @@ export default function AppView({ onBack }: { onBack: () => void }) {
         throw new Error(`Server error: "${match ? match[1] : "Unknown"}". Silakan coba lagi.`);
       }
       const data = JSON.parse(responseText);
+      
+      if (!response.ok) {
+        throw new Error(data.error || "Gagal menganalisis CV.");
+      }
+      
       setResult(data);
       fetchHistory(userId);
     } catch (error: any) {
@@ -150,29 +155,25 @@ export default function AppView({ onBack }: { onBack: () => void }) {
             {/* Dropzone */}
             <div
               {...getRootProps()}
-              className={`border-2 border-dashed rounded-3xl p-10 flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-300 min-h-[220px] ${
+              className={`border-2 border-dashed rounded-3xl p-10 flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-300 h-[280px] w-full relative overflow-hidden ${
                 isDragActive
-                  ? "border-indigo-400 bg-indigo-50 scale-[1.01]"
+                  ? "border-indigo-400 bg-indigo-50"
                   : "border-slate-200 bg-slate-50 hover:border-indigo-300 hover:bg-indigo-50/50"
               }`}
             >
+              {isDragActive && <div className="absolute inset-0 z-10 bg-transparent" />}
               <input {...getInputProps()} disabled={loading} />
               <div className="w-16 h-16 bg-white rounded-2xl shadow-sm border border-slate-100 flex items-center justify-center mb-5">
-                <UploadCloud className={`w-8 h-8 ${isDragActive ? "text-indigo-600 animate-bounce" : "text-indigo-500"}`} />
+                <UploadCloud className={`w-8 h-8 transition-colors ${isDragActive ? "text-indigo-600 animate-bounce" : "text-indigo-500"}`} />
               </div>
               
-              {isDragActive ? (
-                <h3 className="text-lg font-extrabold text-indigo-600 mb-2">Lepaskan file di sini...</h3>
-              ) : (
-                <>
-                  <h3 className="text-lg font-extrabold text-slate-900 mb-2">
-                    Seret & lepas dokumen CV-mu ke sini
-                  </h3>
-                  <p className="text-sm font-medium text-slate-500 mb-5">
-                    atau <span className="text-indigo-600 font-bold hover:underline decoration-indigo-300 underline-offset-4">Jelajahi File</span> dari komputermu
-                  </p>
-                </>
-              )}
+              <h3 className={`text-lg font-extrabold mb-2 transition-colors ${isDragActive ? "text-indigo-600" : "text-slate-900"}`}>
+                {isDragActive ? "Lepaskan file di sini..." : "Seret & lepas dokumen CV-mu ke sini"}
+              </h3>
+              
+              <p className={`text-sm font-medium text-slate-500 mb-5 transition-opacity duration-300 ${isDragActive ? "opacity-0" : "opacity-100"}`}>
+                atau <span className="text-indigo-600 font-bold hover:underline decoration-indigo-300 underline-offset-4">Jelajahi File</span> dari komputermu
+              </p>
               
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white shadow-sm border border-slate-100 text-[0.7rem] font-bold text-slate-500 uppercase tracking-widest">
                 PDF / DOCX <span className="w-1 h-1 bg-slate-300 rounded-full" /> MAKS 5MB

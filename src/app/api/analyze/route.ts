@@ -76,7 +76,22 @@ ${text.slice(0, 12000)}
     console.log("GEMINI RESPONSE SUKSES");
 
     // 4. Parsing response JSON
-    const analysis = JSON.parse(content);
+    let cleanedContent = content;
+    
+    // Cari blok JSON jika dibungkus markdown ```json ... ```
+    const jsonMatch = content.match(/```(?:json)?\s*([\s\S]*?)\s*```/);
+    if (jsonMatch) {
+      cleanedContent = jsonMatch[1];
+    } else {
+      // Jika tidak ada markdown, cari kurawal pembuka dan penutup pertama dan terakhir
+      const firstBrace = content.indexOf('{');
+      const lastBrace = content.lastIndexOf('}');
+      if (firstBrace !== -1 && lastBrace !== -1) {
+        cleanedContent = content.slice(firstBrace, lastBrace + 1);
+      }
+    }
+    
+    const analysis = JSON.parse(cleanedContent);
 
     // 5. Simpan ke Database via Prisma menggunakan model Resume yang baru
     const savedResume = await prisma.resume.create({
